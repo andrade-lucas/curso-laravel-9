@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\UserStoreRequest;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -19,7 +21,9 @@ class UsersController extends Controller
     {
         $users = User::query()->get();
 
-        return view('user.index', ['users' => $users]);
+        return view('user.index', [
+            'users' => $users
+        ]);
     }
 
     /**
@@ -37,12 +41,13 @@ class UsersController extends Controller
      *
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(UserStoreRequest $request): RedirectResponse
     {
-        $data = $request->only(['name', 'email', 'password']);
+        $data = $request->validated();
         $data['password'] = bcrypt($data['password']);
 
-        User::query()->create($data);
+        $user = User::query()->create($data);
+        $user->address()->create($data);
 
         return redirect('users');
     }
@@ -73,6 +78,7 @@ class UsersController extends Controller
     public function edit(int $id): View
     {
         $user = User::query()->find($id);
+        if (!$user) return throw new ModelNotFoundException();
 
         return view('user.edit', ['user' => $user]);
     }
@@ -108,6 +114,10 @@ class UsersController extends Controller
     public function destroy(int $id): RedirectResponse
     {
         $user = User::query()->find($id);
+
+        if (!$user) {
+            throw new ModelNotFoundException();
+        }
 
         $user->delete();
 

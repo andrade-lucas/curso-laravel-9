@@ -12,36 +12,32 @@
 <body>
     <main class="container">
         <h1>Index</h1>
-        <a type="button" href="{{ route('users.create') }}" class="btn btn-primary">Novo usuário</a>
+        {{-- <a type="button" href="{{ route('posts.create', $post->user_id) }}" class="btn btn-primary">Novo post</a> --}}
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Email</th>
+                    <th scope="col">título</th>
+                    <th scope="col">autor</th>
                     <th scope="col">Ver</th>
                     <th scope="col">Editar</th>
-                    <th scope="col">Post</th>
                     <th scope="col">Deletar</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($users as $user)
+                @foreach ($posts as $post)
                     <tr>
-                        <th scope="row">{{ $user->id }}</th>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->email }}</td>
+                        <th scope="row">{{ $post->id }}</th>
+                        <td>{{ $post->title }}</td>
+                        <td>{{ $post->user?->name }}</td>
                         <td>
-                            <a type="button" href="{{ route('users.show', $user->id) }}" class="btn btn-success">Ver</a>
+                            <a type="button" href="{{ route('users.show', $post->id) }}" class="btn btn-success">Ver</a>
                         </td>
                         <td>
-                            <a type="button" href="{{ route('users.edit', $user->id) }}" class="btn btn-warning">Editar</a>
+                            <a type="button" href="{{ route('users.edit', $post->id) }}" class="btn btn-warning">Editar</a>
                         </td>
                         <td>
-                            <a type="button" href="{{ route('posts.create', $user->id) }}" class="btn btn-info">Post</a>
-                        </td>
-                        <td>
-                            <form action="{{ route('users.destroy', $user->id) }}" method="post">
+                            <form action="{{ route('posts.destroy', $post->id) }}" method="post">
                                 @csrf
                                 @method('delete')
                                 <button type="submit" class="btn btn-danger">Deletar</button>

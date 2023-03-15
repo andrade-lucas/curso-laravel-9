@@ -11,43 +11,39 @@
 
 <body>
     <main class="container">
-        <h1>Criar</h1>
-        <form method="post" action="{{ route('users.store') }}">
+        <h1>Criar Post</h1>
+        <form method="post" action="{{ route('posts.store') }}">
             @csrf
+
+            {{-- <div class="form-group mb-3">
+                <label for="user_id">Usuário</label>
+                <select name="user_id" id="user_id" class="form-control">
+                    <option selected disabled>Selecione um autor</option>
+                    @foreach ($users as $user)
+                        <option value="{{$user->id}}">{{$user->name}}</option>
+                    @endforeach
+                </select>
+            </div> --}}
+
+            <input type="hidden" name="userId" value="{{$user->id}}">
+            
             <div class="mb-3">
-                <label for="name" class="form-label">Nome</label>
-                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{old('name')}}">
-                @error('name')
+                <label for="title" class="form-label">Título</label>
+                <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{old('title')}}">
+                @error('title')
                     <div class="invalid-feedback">
                         {{$message}}
                     </div>
                 @enderror
             </div>
             <div class="mb-3">
-                <label for="email" class="form-label">E-mail</label>
-                <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{old('email')}}">
-                @error('email')
+                <label for="content" class="form-label">Conteúdo</label>
+                <textarea name="content" id="content" class="form-control @error('content') is-invalid @enderror" cols="30" rows="10">{{old('content')}}</textarea>
+                @error('content')
                     <div class="invalid-feedback">
                         {{$message}}
                     </div>
                 @enderror
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Senha</label>
-                <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" value="{{old('password')}}">
-                @error('password')
-                    <div class="invalid-feedback">
-                        {{$message}}
-                    </div>
-                @enderror
-            </div>
-            <div class="mb-3">
-                <label for="street" class="form-label">Rua</label>
-                <input type="text" class="form-control" id="street" name="street" value="{{old('street')}}">
-            </div>
-            <div class="mb-3">
-                <label for="number" class="form-label">Número</label>
-                <input type="text" class="form-control" id="number" name="number" value="{{old('number')}}">
             </div>
 
             <button type="submit" class="btn btn-primary">Salvar</button>
